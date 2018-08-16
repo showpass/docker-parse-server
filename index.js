@@ -81,7 +81,7 @@ if (devBundleId && (devPfx || (devCert && devKey))) { // exsiting files if not n
     iosPushConfigs.push(devPushConfig);
 }
 
-if(process.env.APNS_BUNDLES_ID && process.env.APNS_BUNDLES_P12 && process.env.APNS_BUNDLES_PROD) {
+if(process.env.APNS_BUNDLES_ID && process.env.APNS_BUNDLES_P12 && process.env.APNS_BUNDLES_PROD && process.env.APNS_BUNDLES_PASSPHRASE) {
     var APNSBundlesId = process.env.APNS_BUNDLES_ID.split(',').map(function(entry) {
         return entry.trim();
     });
@@ -91,12 +91,16 @@ if(process.env.APNS_BUNDLES_ID && process.env.APNS_BUNDLES_P12 && process.env.AP
     var APNSBundlesProd = process.env.APNS_BUNDLES_PROD.split(',').map(function(entry) {
         return entry.trim();
     });
+    var APNSBundlesPassPhrase = process.env.APNS_BUNDLES_PASSPHRASE.split(',').map(function(entry) {
+        return entry.trim();
+    });
     if(APNSBundlesId.length === APNSBundlesP12.length && APNSBundlesP12.length === APNSBundlesProd.length) {
         for (var i = 0; i < APNSBundlesId.length; i++) {
             APNSpushConfig = {
                 pfx: APNSBundlesP12[i],
                 bundleId: APNSBundlesId[i],
-                production: (APNSBundlesProd[i] === 'true' ? true : false)
+                production: (APNSBundlesProd[i] === 'true' ? true : false),
+                passphrase: APNSBundlesPassPhrase[i]
             };
             iosPushConfigs.push(APNSpushConfig);
         }
